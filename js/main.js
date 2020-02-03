@@ -65,82 +65,80 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 var MAP_WIDTH = 1062;
-var AMOUT_OF_ADVERTISMETS = 8;
+var ADVERTISMET_AMOUT = 8;
 var OFFSET_X = 20;
 var OFFSET_Y = 40;
 
-var getAvatar = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return AVATAR_URLS[randomNumber];
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var mapPins = document.querySelector('.map__pins');
+
+var getRandomNumber = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getTitle = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return TITLES[randomNumber];
+var getRandomAvatar = function (min, max) {
+  return AVATAR_URLS[getRandomNumber(min, max)];
 };
 
-var getPrice = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return PRICES[randomNumber];
+var getRandomTitle = function (min, max) {
+  return TITLES[getRandomNumber(min, max)];
 };
 
-var getType = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return TYPES[randomNumber];
+var getRandomPrice = function (min, max) {
+  return PRICES[getRandomNumber(min, max)];
 };
 
-var getNumber = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return randomNumber;
+var getRandomType = function (min, max) {
+  return TYPES[getRandomNumber(min, max)];
 };
 
-var getTime = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return TIMES[randomNumber];
+var getRandomTime = function (min, max) {
+  return TIMES[getRandomNumber(min, max)];
 };
 
-var getDescribtion = function (min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  return DESCRIBTIONS[randomNumber];
+var getRandomDescribtion = function (min, max) {
+  return DESCRIBTIONS[getRandomNumber(min, max)];
 };
 
-var getAddress = function () {
-  var locationX = getNumber(0, MAP_WIDTH);
-  var locationY = getNumber(130, 630);
+var getRandomAddress = function () {
+  var locationX = getRandomNumber(0, MAP_WIDTH);
+  var locationY = getRandomNumber(130, 630);
   return locationX.toString() + ', ' + locationY.toString();
 };
 
 var randomFeatures = [];
-for (var i = 0; i < getNumber(1, FEATURES.length); i++) {
+for (var i = 0; i < getRandomNumber(1, FEATURES.length); i++) {
   randomFeatures[i] = FEATURES[i];
 }
 
 var randomPhotos = [];
-for (var j = 0; j < getNumber(1, PHOTOS.length); j++) {
+for (var j = 0; j < getRandomNumber(1, PHOTOS.length); j++) {
   randomPhotos[j] = PHOTOS[j];
 }
 
 var getAdvertisment = function () {
   var advertisment = {
     'author': {
-      'avatar': getAvatar(0, 7)
+      'avatar': getRandomAvatar(0, 7)
     },
     'offer': {
-      'title': getTitle(0, 7),
-      'address': getAddress(),
-      'price': getPrice(0, 7),
-      'type': getType(0, 3),
-      'rooms': getNumber(1, 5),
-      'guests': getNumber(1, 30),
-      'checkin': getTime(0, 2),
-      'checkout': getTime(0, 2),
+      'title': getRandomTitle(0, 7),
+      'address': getRandomAddress(),
+      'price': getRandomPrice(0, 7),
+      'type': getRandomType(0, 3),
+      'rooms': getRandomNumber(1, 5),
+      'guests': getRandomNumber(1, 30),
+      'checkin': getRandomTime(0, 2),
+      'checkout': getRandomTime(0, 2),
       'features': randomFeatures,
-      'description': getDescribtion(0, 7),
+      'description': getRandomDescribtion(0, 7),
       'photos': randomPhotos
     },
     'location': {
-      'x': getNumber(0, MAP_WIDTH),
-      'y': getNumber(130, 630)
+      'x': getRandomNumber(0, MAP_WIDTH),
+      'y': getRandomNumber(130, 630)
     }
   };
   return advertisment;
@@ -148,26 +146,19 @@ var getAdvertisment = function () {
 
 var advertisements = [];
 
-for (var k = 0; k < AMOUT_OF_ADVERTISMETS; k++) {
+for (var k = 0; k < ADVERTISMET_AMOUT; k++) {
   advertisements[k] = getAdvertisment();
 }
-
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
-var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var getStyle = function (x, y) {
   return 'left: ' + (x + OFFSET_X).toString() + 'px; top: ' + (y + OFFSET_Y).toString() + 'px;';
 };
 
-var fragment = document.createDocumentFragment();
-
-for (var n = 0; n < advertisements.length; n++) {
-  var pinLocationX = advertisements[n].location.x;
-  var pinLocationY = advertisements[n].location.y;
-  var avatarSrc = advertisements[n].author.avatar;
-  var avatarAlt = advertisements[n].offer.title;
+var getPin = function (pinSample) {
+  var pinLocationX = pinSample.location.x;
+  var pinLocationY = pinSample.location.y;
+  var avatarSrc = pinSample.author.avatar;
+  var avatarAlt = pinSample.offer.title;
 
   var pin = pinTemplate.cloneNode(true);
   pin.style = getStyle(pinLocationX, pinLocationY);
@@ -176,7 +167,13 @@ for (var n = 0; n < advertisements.length; n++) {
   pinImage.src = avatarSrc;
   pinImage.alt = avatarAlt;
 
-  fragment.appendChild(pin);
+  return pin;
+};
+
+var fragment = document.createDocumentFragment();
+
+for (var n = 0; n < advertisements.length; n++) {
+  fragment.appendChild(getPin(advertisements[n]));
 }
-var mapPins = document.querySelector('.map__pins');
+
 mapPins.appendChild(fragment);
