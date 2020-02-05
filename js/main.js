@@ -68,6 +68,8 @@ var MAP_WIDTH = 1062;
 var ADVERTISEMENT_AMOUT = 8;
 var OFFSET_X = 20;
 var OFFSET_Y = 40;
+var PIN_INACTIVE_OFFSET = 32;
+var PIN_ACTIVE_OFFSET_Y = 43;
 
 var map = document.querySelector('.map');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -78,6 +80,7 @@ var pinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElements = document.querySelectorAll('.ad-form__element');
+var addressInput = adForm.querySelector('#address');
 
 adFormHeader.setAttribute('disabled', 'disabled');
 for (var d = 0; d < adFormElements.length; d++) {
@@ -197,6 +200,21 @@ var getAllPins = function () {
   mapPins.appendChild(fragment);
 };
 
+var getPinMainAddress = function () {
+  var pinMainLeft = parseInt(pinMain.style.left, 10) + PIN_INACTIVE_OFFSET;
+  var pinMainTop = parseInt(pinMain.style.top, 10) + PIN_INACTIVE_OFFSET;
+
+  return pinMainLeft + ', ' + pinMainTop;
+};
+
+var getPinActiveAddress = function () {
+  var pinMainLeft = parseInt(pinMain.style.left, 10) + PIN_INACTIVE_OFFSET;
+  var pinMainTop = parseInt(pinMain.style.top, 10) + PIN_ACTIVE_OFFSET_Y;
+
+  return pinMainLeft + ', ' + pinMainTop;
+};
+
+addressInput.value = getPinMainAddress();
 
 var getActive = function () {
   map.classList.remove('map--faded');
@@ -204,6 +222,8 @@ var getActive = function () {
 
   getFormActive();
   getAllPins();
+
+  addressInput.value = getPinActiveAddress();
 };
 
 var onPinMousedown = function (evt) {
