@@ -81,6 +81,20 @@ var adForm = document.querySelector('.ad-form');
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElements = document.querySelectorAll('.ad-form__element');
 var addressInput = adForm.querySelector('#address');
+var roomsInput = adForm.querySelector('select[name="rooms"]');
+var capacityInput = adForm.querySelector('select[name="capacity"]');
+
+var onRoomsSelectChange = function (evt) {
+  var target = evt.target;
+
+  if (target.value !== capacityInput.value) {
+    target.setCustomValidity('к-во комнат должно соответствовать к-ву гостей');
+  } else {
+    target.setCustomValidity('');
+  }
+};
+
+roomsInput.addEventListener('change', onRoomsSelectChange);
 
 adFormHeader.setAttribute('disabled', 'disabled');
 for (var d = 0; d < adFormElements.length; d++) {
