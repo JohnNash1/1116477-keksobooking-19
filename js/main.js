@@ -88,13 +88,24 @@ var onRoomsSelectChange = function (evt) {
   var target = evt.target;
 
   if (target.value !== capacityInput.value) {
-    target.setCustomValidity('к-во комнат должно соответствовать к-ву гостей');
+    target.setCustomValidity('К-во комнат должно соответствовать к-ву гостей');
+  } else {
+    target.setCustomValidity('');
+  }
+};
+
+var capacitySelectChange = function (evt) {
+  var target = evt.target;
+
+  if (target.value !== roomsInput.value) {
+    target.setCustomValidity('К-во гостей должно соответствовать к-ву комнат');
   } else {
     target.setCustomValidity('');
   }
 };
 
 roomsInput.addEventListener('change', onRoomsSelectChange);
+capacityInput.addEventListener('change', capacitySelectChange);
 
 adFormHeader.setAttribute('disabled', 'disabled');
 for (var d = 0; d < adFormElements.length; d++) {
