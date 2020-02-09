@@ -155,7 +155,7 @@ for (var d = 0; d < adFormElements.length; d++) {
   adFormElements[d].setAttribute('disabled', 'disabled');
 }
 
-var getFormActive = function () {
+var setFormActive = function () {
   adFormHeader.removeAttribute('disabled', 'disabled');
   for (var f = 0; f < adFormElements.length; f++) {
     adFormElements[f].removeAttribute('disabled', 'disabled');
@@ -268,7 +268,7 @@ var getPin = function (pinSample) {
   return pin;
 };
 
-var getAllPins = function () {
+var renderAllPins = function () {
   var fragment = document.createDocumentFragment();
 
   for (var n = 0; n < advertisements.length; n++) {
@@ -294,16 +294,16 @@ var getPinActiveAddress = function () {
 
 addressInput.value = getPinMainAddress();
 
-var getActive = function () {
+var setActive = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
 
-  getFormActive();
-  getAllPins();
+  setFormActive();
+  renderAllPins();
 
   addressInput.value = getPinActiveAddress();
 
-  getPinsHandler();
+  setPinsHandler();
 
   pinMain.removeEventListener('mousedown', onPinMousedown);
   pinMain.removeEventListener('keydown', onPinKeydown);
@@ -311,13 +311,13 @@ var getActive = function () {
 
 var onPinMousedown = function (evt) {
   if (evt.button === 0) {
-    getActive();
+    setActive();
   }
 };
 
 var onPinKeydown = function (evt) {
   if (evt.key === 'Enter') {
-    getActive();
+    setActive();
   }
 };
 
@@ -441,7 +441,7 @@ for (k = 0; k < ADVERTISEMENT_AMOUT; k++) {
   map.insertBefore(getCard(advertisements[k]), mapFiltersContainer);
 }
 
-var getCardShow = function (advertisementPin, advertisementCard) {
+var setCardShow = function (advertisementPin, advertisementCard) {
   advertisementPin.addEventListener('click', function () {
     advertisementCard.style.display = 'block';
   });
@@ -452,7 +452,7 @@ var getCardShow = function (advertisementPin, advertisementCard) {
   });
 };
 
-var getCardHide = function (advertisementCloseButton, advertisementCard) {
+var setCardHide = function (advertisementCloseButton, advertisementCard) {
   advertisementCloseButton.addEventListener('click', function () {
     advertisementCard.style.display = 'none';
   });
@@ -463,9 +463,9 @@ var getCardHide = function (advertisementCloseButton, advertisementCard) {
   });
 };
 
-var getPinsHandler = function () {
+var setPinsHandler = function () {
   for (var f = 0; f < adsPins.length; f++) {
-    getCardShow(adsPins[f], adsCards[f]);
-    getCardHide(closeButtons[f], adsCards[f]);
+    setCardShow(adsPins[f], adsCards[f]);
+    setCardHide(closeButtons[f], adsCards[f]);
   }
 };
