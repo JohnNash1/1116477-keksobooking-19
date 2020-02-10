@@ -93,24 +93,19 @@ var priceInput = adForm.querySelector('input[name="price"]');
 var timeinInput = adForm.querySelector('select[name="timein"]');
 var timeoutInput = adForm.querySelector('select[name="timeout"]');
 
-
-var onRoomsSelectChange = function (evt) {
-  var target = evt.target;
-
-  if (target.value !== capacityInput.value) {
-    target.setCustomValidity('К-во комнат должно соответствовать к-ву гостей');
+var onSelectChange = function () {
+  if (roomsInput.value === '100' && capacityInput.value !== '0') {
+    capacityInput.setCustomValidity('Это помещение не для гостей');
+    roomsInput.setCustomValidity('Это помещение не для гостей');
+  } else if (roomsInput.value !== '100' && capacityInput.value === '0') {
+    capacityInput.setCustomValidity('Это помещение только для гостей');
+    roomsInput.setCustomValidity('Это помещение только для гостей');
+  } else if (roomsInput.value !== '100' && capacityInput.value > roomsInput.value) {
+    capacityInput.setCustomValidity('К-во гостей не должно превышать к-во комнат');
+    roomsInput.setCustomValidity('К-во гостей не должно превышать к-во комнат');
   } else {
-    target.setCustomValidity('');
-  }
-};
-
-var onCapacitySelectChange = function (evt) {
-  var target = evt.target;
-
-  if (target.value !== roomsInput.value) {
-    target.setCustomValidity('К-во гостей должно соответствовать к-ву комнат');
-  } else {
-    target.setCustomValidity('');
+    capacityInput.setCustomValidity('');
+    roomsInput.setCustomValidity('');
   }
 };
 
@@ -143,8 +138,8 @@ var onTimeoutChange = function (evt) {
   timeinInput.value = evt.target.value;
 };
 
-roomsInput.addEventListener('change', onRoomsSelectChange);
-capacityInput.addEventListener('change', onCapacitySelectChange);
+capacityInput.addEventListener('change', onSelectChange);
+roomsInput.addEventListener('change', onSelectChange);
 typeInput.addEventListener('change', onTypeInputChange);
 timeinInput.addEventListener('change', onTimeinChange);
 timeoutInput.addEventListener('change', onTimeoutChange);
