@@ -75,24 +75,32 @@
   pinMain.addEventListener('mousedown', onPinMousedown);
   pinMain.addEventListener('keydown', onPinKeydown);
 
+  var setDisplayBlock = function (shown) {
+    shown.style.display = 'block';
+  };
+
+  var setDisplayNone = function (hidden) {
+    hidden.style.display = 'none';
+  };
+
   var setCardShow = function (advertisementPin, advertisementCard) {
     advertisementPin.addEventListener('click', function () {
-      advertisementCard.style.display = 'block';
+      setDisplayBlock(advertisementCard);
     });
     advertisementPin.addEventListener('keydown', function (evt) {
       if (evt.key === KEY_ENTER) {
-        advertisementCard.style.display = 'block';
+        setDisplayBlock(advertisementCard);
       }
     });
   };
 
   var setCardHide = function (advertisementCloseButton, advertisementCard) {
     advertisementCloseButton.addEventListener('click', function () {
-      advertisementCard.style.display = 'none';
+      setDisplayNone(advertisementCard);
     });
     document.addEventListener('keydown', function (keyEvt) {
       if (keyEvt.key === KEY_ESC) {
-        advertisementCard.style.display = 'none';
+        setDisplayNone(advertisementCard);
       }
     });
   };
@@ -103,4 +111,6 @@
       setCardHide(closeButtons[f], adsCards[f]);
     }
   };
+
+  window.active = setDisplayNone;
 })();
