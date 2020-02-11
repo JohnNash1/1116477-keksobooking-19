@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var adForm = document.querySelector('.ad-form');
   var roomsInput = adForm.querySelector('select[name="rooms"]');

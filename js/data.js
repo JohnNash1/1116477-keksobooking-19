@@ -99,11 +99,12 @@
   var getRandomAddress = function () {
     var locationX = getRandomNumber(0, MAP_WIDTH);
     var locationY = getRandomNumber(130, 630);
-    return locationX.toString() + ', ' + locationY.toString();
+    return locationX + ', ' + locationY;
   };
 
   var getRandomFeatures = function () {
     var randomFeatures = [];
+
     for (var i = 0; i < getRandomNumber(1, FEATURES.length); i++) {
       randomFeatures[i] = FEATURES[i];
     }
@@ -113,6 +114,7 @@
 
   var getRandomPhotos = function () {
     var randomPhotos = [];
+
     for (var j = 0; j < getRandomNumber(1, PHOTOS.length); j++) {
       randomPhotos[j] = PHOTOS[j];
     }

@@ -89,6 +89,7 @@
           break;
       }
     }
+
     if (conditioner === 0) {
       window.active(cardConditioner);
     }
@@ -109,6 +110,7 @@
     }
 
     cardPhoto.src = offerPhotos[0];
+
     if (offerPhotos.length > 1) {
       for (var u = 1; u < offerPhotos.length; u++) {
         var clonedPhoto = cardPhoto.cloneNode();
