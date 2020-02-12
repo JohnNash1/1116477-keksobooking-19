@@ -56,14 +56,54 @@
 
     setPinsHandler();
 
-    pinMain.removeEventListener('mousedown', onPinMousedown);
     pinMain.removeEventListener('keydown', onPinKeydown);
   };
 
+  var isItFirst = 0;
+
   var onPinMousedown = function (evt) {
+    evt.preventDefault();
+
     if (evt.button === 0) {
+      isItFirst += 1;
+    }
+    if (evt.button === 0 && isItFirst === 1) {
       setActive();
     }
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+
+      addressInput.value = getPinActiveAddress();
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   var onPinKeydown = function (evt) {
@@ -111,6 +151,9 @@
       setCardHide(closeButtons[f], adsCards[f]);
     }
   };
+
+  // var onMainPinMover = function (evt) {
+  // };
 
   window.active = setDisplayNone;
 })();
