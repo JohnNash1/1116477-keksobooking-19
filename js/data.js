@@ -66,7 +66,7 @@
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
   ];
   var ADVERTISEMENT_AMOUT = 8;
-  var MAP_WIDTH = 1062;
+  var MAP_WIDTH = 1200;
 
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

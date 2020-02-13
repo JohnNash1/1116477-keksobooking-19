@@ -89,8 +89,14 @@
         y: moveEvt.clientY
       };
 
-      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      if (startCoords.y < 130 || startCoords.y > 630) {
+        pinMain.style.top = pinMain.offsetTop + 'px';
+      } else if (startCoords.x < 350 || startCoords.x > 1550) {
+        pinMain.style.left = pinMain.offsetLeft + 'px';
+      } else {
+        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      }
 
       addressInput.value = getPinActiveAddress();
     };
