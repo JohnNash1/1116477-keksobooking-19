@@ -115,12 +115,12 @@
   pinMain.addEventListener('mousedown', onPinMousedown);
   pinMain.addEventListener('keydown', onPinKeydown);
 
-  var setDisplayBlock = function (shown) {
-    shown.style.display = 'block';
+  var setDisplayBlock = function (elem) {
+    elem.style.display = 'block';
   };
 
-  var setDisplayNone = function (hidden) {
-    hidden.style.display = 'none';
+  var setDisplayNone = function (elem) {
+    elem.style.display = 'none';
   };
 
   var setCardShow = function (advertisementPin, advertisementCard) {
@@ -151,9 +151,6 @@
       setCardHide(closeButtons[f], adsCards[f]);
     }
   };
-
-  // var onMainPinMover = function (evt) {
-  // };
 
   window.active = setDisplayNone;
 })();
