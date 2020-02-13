@@ -124,7 +124,11 @@
     return card;
   };
 
-  for (var k = 0; k < window.data.advertisementAmount; k++) {
-    map.insertBefore(getCard(window.data.advertisements[k]), mapFiltersContainer);
-  }
+  var renderCards = function (advertisements) {
+    for (var k = 0; k < window.data.advertisementAmount; k++) {
+      map.insertBefore(getCard(advertisements[k]), mapFiltersContainer);
+    }
+  };
+
+  window.backend.load(renderCards, window.pins.errorHandler);
 })();

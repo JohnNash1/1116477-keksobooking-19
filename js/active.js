@@ -50,7 +50,7 @@
     adForm.classList.remove('ad-form--disabled');
 
     setFormActive();
-    window.pins();
+    window.backend.load(window.pins.renderAllPins, window.pins.errorHandler);
 
     addressInput.value = getPinActiveAddress();
 
