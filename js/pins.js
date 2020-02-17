@@ -25,18 +25,35 @@
     pinImage.alt = avatarAlt;
     pin.classList.add('map__pin--ads');
 
+    pin.style.display = 'none';
+
     return pin;
   };
 
-  var renderAllPins = function () {
+  var renderAllPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
 
-    for (var n = 0; n < window.data.advertisements.length; n++) {
-      fragment.appendChild(getPin(window.data.advertisements[n]));
+    for (var n = 0; n < window.data.advertisementAmount; n++) {
+      fragment.appendChild(getPin(advertisements[n]));
     }
 
     mapPins.appendChild(fragment);
   };
 
-  window.pins = renderAllPins;
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.pins = {
+    renderAllPins: renderAllPins,
+    errorHandler: errorHandler
+  };
 })();

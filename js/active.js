@@ -50,7 +50,9 @@
     adForm.classList.remove('ad-form--disabled');
 
     setFormActive();
-    window.pins();
+    for (var i = 0; i < adsPins.length; i++) {
+      setDisplayBlock(adsPins[i]);
+    }
 
     addressInput.value = getPinActiveAddress();
 
@@ -89,8 +91,14 @@
         y: moveEvt.clientY
       };
 
-      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      if (startCoords.y < 130 || startCoords.y > 630) {
+        pinMain.style.top = pinMain.offsetTop + 'px';
+      } else if (startCoords.x < 350 || startCoords.x > 1550) {
+        pinMain.style.left = pinMain.offsetLeft + 'px';
+      } else {
+        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      }
 
       addressInput.value = getPinActiveAddress();
     };
@@ -115,12 +123,12 @@
   pinMain.addEventListener('mousedown', onPinMousedown);
   pinMain.addEventListener('keydown', onPinKeydown);
 
-  var setDisplayBlock = function (shown) {
-    shown.style.display = 'block';
+  var setDisplayBlock = function (elem) {
+    elem.style.display = 'block';
   };
 
-  var setDisplayNone = function (hidden) {
-    hidden.style.display = 'none';
+  var setDisplayNone = function (elem) {
+    elem.style.display = 'none';
   };
 
   var setCardShow = function (advertisementPin, advertisementCard) {
@@ -151,9 +159,6 @@
       setCardHide(closeButtons[f], adsCards[f]);
     }
   };
-
-  // var onMainPinMover = function (evt) {
-  // };
 
   window.active = setDisplayNone;
 })();
