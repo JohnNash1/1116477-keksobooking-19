@@ -130,5 +130,10 @@
     }
   };
 
-  window.backend.load(renderCards, window.pins.errorHandler);
+  var renderAll = function (response) {
+    renderCards(response);
+    window.pins.renderAllPins(response);
+  };
+
+  window.backend.load(renderAll, window.pins.errorHandler);
 })();

@@ -25,6 +25,8 @@
     pinImage.alt = avatarAlt;
     pin.classList.add('map__pin--ads');
 
+    pin.style.display = 'none';
+
     return pin;
   };
 
