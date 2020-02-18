@@ -50,9 +50,7 @@
     adForm.classList.remove('ad-form--disabled');
 
     setFormActive();
-    for (var i = 0; i < adsPins.length; i++) {
-      setDisplayBlock(adsPins[i]);
-    }
+    setPinsVisible();
 
     addressInput.value = getPinActiveAddress();
 
@@ -157,6 +155,12 @@
     for (var f = 0; f < adsPins.length; f++) {
       setCardShow(adsPins[f], adsCards[f]);
       setCardHide(closeButtons[f], adsCards[f]);
+    }
+  };
+
+  var setPinsVisible = function () {
+    for (var i = 0; i < adsPins.length; i++) {
+      setDisplayBlock(adsPins[i]);
     }
   };
 
