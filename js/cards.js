@@ -125,7 +125,7 @@
   };
 
   var renderCards = function (advertisements) {
-    for (var k = 0; k < window.data.advertisementAmount; k++) {
+    for (var k = 0; k < advertisements.length; k++) {
       map.insertBefore(getCard(advertisements[k]), mapFiltersContainer);
     }
   };

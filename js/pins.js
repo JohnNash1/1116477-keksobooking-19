@@ -33,7 +33,7 @@
   var renderAllPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
 
-    for (var n = 0; n < window.data.advertisementAmount; n++) {
+    for (var n = 0; n < advertisements.length; n++) {
       fragment.appendChild(getPin(advertisements[n]));
     }
 
