@@ -91,22 +91,22 @@
     }
 
     if (conditioner === 0) {
-      window.active(cardConditioner);
+      window.active.setDisplayNone(cardConditioner);
     }
     if (elevator === 0) {
-      window.active(cardElevator);
+      window.active.setDisplayNone(cardElevator);
     }
     if (washer === 0) {
-      window.active(cardWasher);
+      window.active.setDisplayNone(cardWasher);
     }
     if (parking === 0) {
-      window.active(cardParking);
+      window.active.setDisplayNone(cardParking);
     }
     if (dishwasher === 0) {
-      window.active(cardDishwasher);
+      window.active.setDisplayNone(cardDishwasher);
     }
     if (wifi === 0) {
-      window.active(cardWifi);
+      window.active.setDisplayNone(cardWifi);
     }
 
     cardPhoto.src = offerPhotos[0];
@@ -119,7 +119,7 @@
       }
     }
 
-    window.active(card);
+    window.active.setDisplayNone(card);
 
     return card;
   };

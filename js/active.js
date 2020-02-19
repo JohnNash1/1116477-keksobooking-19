@@ -29,6 +29,13 @@
     }
   };
 
+  var setFormInactive = function () {
+    adFormHeader.setAttribute('disabled', 'disabled');
+    for (var f = 0; f < adFormElements.length; f++) {
+      adFormElements[f].setAttribute('disabled', 'disabled');
+    }
+  };
+
   var getPinMainAddress = function () {
     var pinMainLeft = parseInt(pinMain.style.left, 10) + PIN_INACTIVE_OFFSET;
     var pinMainTop = parseInt(pinMain.style.top, 10) + PIN_INACTIVE_OFFSET;
@@ -164,5 +171,23 @@
     }
   };
 
-  window.active = setDisplayNone;
+  var setPinsHidden = function () {
+    for (var i = 0; i < adsPins.length; i++) {
+      setDisplayNone(adsPins[i]);
+    }
+  };
+
+  var setInactive = function () {
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+
+    setFormInactive();
+    setPinsHidden();
+  };
+
+  window.active = {
+    keyEscape: KEY_ESC,
+    setDisplayNone: setDisplayNone,
+    setInactive: setInactive
+  };
 })();
