@@ -16,6 +16,13 @@
   var adsPins = mapPins.getElementsByClassName('map__pin--ads');
   var adsCards = map.getElementsByClassName('map__card');
   var closeButtons = map.getElementsByClassName('popup__close');
+  var resetButton = adForm.querySelector('.ad-form__reset');
+
+  var onResetButtonClick = function () {
+    setInactive();
+  };
+
+  resetButton.addEventListener('click', onResetButtonClick);
 
   adFormHeader.setAttribute('disabled', 'disabled');
   for (var d = 0; d < adFormElements.length; d++) {
@@ -26,6 +33,13 @@
     adFormHeader.removeAttribute('disabled', 'disabled');
     for (var f = 0; f < adFormElements.length; f++) {
       adFormElements[f].removeAttribute('disabled', 'disabled');
+    }
+  };
+
+  var setFormInactive = function () {
+    adFormHeader.setAttribute('disabled', 'disabled');
+    for (var f = 0; f < adFormElements.length; f++) {
+      adFormElements[f].setAttribute('disabled', 'disabled');
     }
   };
 
@@ -50,9 +64,7 @@
     adForm.classList.remove('ad-form--disabled');
 
     setFormActive();
-    for (var i = 0; i < adsPins.length; i++) {
-      setDisplayBlock(adsPins[i]);
-    }
+    setPinsVisible();
 
     addressInput.value = getPinActiveAddress();
 
@@ -61,15 +73,10 @@
     pinMain.removeEventListener('keydown', onPinKeydown);
   };
 
-  var isItFirst = 0;
-
   var onPinMousedown = function (evt) {
     evt.preventDefault();
 
     if (evt.button === 0) {
-      isItFirst += 1;
-    }
-    if (evt.button === 0 && isItFirst === 1) {
       setActive();
     }
 
@@ -160,5 +167,29 @@
     }
   };
 
-  window.active = setDisplayNone;
+  var setPinsVisible = function () {
+    for (var i = 0; i < adsPins.length; i++) {
+      setDisplayBlock(adsPins[i]);
+    }
+  };
+
+  var setPinsHidden = function () {
+    for (var i = 0; i < adsPins.length; i++) {
+      setDisplayNone(adsPins[i]);
+    }
+  };
+
+  var setInactive = function () {
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+
+    setFormInactive();
+    setPinsHidden();
+  };
+
+  window.active = {
+    keyEscape: KEY_ESC,
+    setDisplayNone: setDisplayNone,
+    setInactive: setInactive
+  };
 })();

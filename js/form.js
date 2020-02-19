@@ -8,6 +8,9 @@
   var priceInput = adForm.querySelector('input[name="price"]');
   var timeinInput = adForm.querySelector('select[name="timein"]');
   var timeoutInput = adForm.querySelector('select[name="timeout"]');
+  var successTemp = document.querySelector('#success').content.querySelector('.success');
+
+  var success = successTemp.cloneNode(true);
 
   var onSelectChange = function () {
     if (roomsInput.value === '100' && capacityInput.value !== '0') {
@@ -59,4 +62,37 @@
   typeInput.addEventListener('change', onTypeInputChange);
   timeinInput.addEventListener('change', onTimeinChange);
   timeoutInput.addEventListener('change', onTimeoutChange);
+
+  var removeSuccessMessage = function () {
+    adForm.removeChild(success);
+    document.removeEventListener('click', onSuccsessMessageClick);
+    document.removeEventListener('keydown', onSuccsessMessageKeydown);
+  };
+
+  var onSuccsessMessageClick = function () {
+    removeSuccessMessage();
+  };
+
+  var onSuccsessMessageKeydown = function (evt) {
+    if (evt.key === window.active.keyEscape) {
+      removeSuccessMessage();
+    }
+  };
+
+  var setSuccessClosed = function () {
+    document.addEventListener('click', onSuccsessMessageClick);
+    document.addEventListener('keydown', onSuccsessMessageKeydown);
+  };
+
+  var onSaveSuccess = function () {
+    adForm.appendChild(success);
+    adForm.reset();
+    window.active.setInactive();
+    setSuccessClosed();
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(adForm), onSaveSuccess, window.pins.errorHandler);
+  });
 })();

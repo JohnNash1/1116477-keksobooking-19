@@ -6,6 +6,12 @@
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var main = document.querySelector('main');
+
+  var error = errorTemplate.cloneNode(true);
+  var errorText = error.querySelector('.error__message');
+  // var errorButton = error.querySelector('.error__button');
 
   var getStyle = function (x, y) {
     return 'left: ' + (x + OFFSET_X) + 'px; top: ' + (y + OFFSET_Y) + 'px;';
@@ -33,23 +39,39 @@
   var renderAllPins = function (advertisements) {
     var fragment = document.createDocumentFragment();
 
-    for (var n = 0; n < window.data.advertisementAmount; n++) {
+    for (var n = 0; n < advertisements.length; n++) {
       fragment.appendChild(getPin(advertisements[n]));
     }
 
     mapPins.appendChild(fragment);
   };
 
-  var errorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
+  var removeErrorMessage = function () {
+    main.removeChild(error);
+    document.removeEventListener('click', onErrorMessageClick);
+    document.removeEventListener('keydown', onErrorMessageKeydown);
+  };
 
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
+  var onErrorMessageClick = function () {
+    removeErrorMessage();
+  };
+
+  var onErrorMessageKeydown = function (evt) {
+    if (evt.key === window.active.keyEscape) {
+      removeErrorMessage();
+    }
+  };
+
+  var setErrorClosed = function () {
+    document.addEventListener('click', onErrorMessageClick);
+    document.addEventListener('keydown', onErrorMessageKeydown);
+    // errorButton.addEventListener('click', onErrorMessageClick); если у меня навешан обработчик клика куда угодно и происходит закрытие сообщения, зачем мне ещё обработчик на кнопку "попробовать снова"?
+  };
+
+  var errorHandler = function (errorMessage) {
+    errorText.textContent = errorMessage;
+    main.appendChild(error);
+    setErrorClosed();
   };
 
   window.pins = {
