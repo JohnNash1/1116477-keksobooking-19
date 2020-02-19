@@ -16,6 +16,13 @@
   var adsPins = mapPins.getElementsByClassName('map__pin--ads');
   var adsCards = map.getElementsByClassName('map__card');
   var closeButtons = map.getElementsByClassName('popup__close');
+  var resetButton = adForm.querySelector('.ad-form__reset');
+
+  var onResetButtonClick = function () {
+    setInactive();
+  };
+
+  resetButton.addEventListener('click', onResetButtonClick);
 
   adFormHeader.setAttribute('disabled', 'disabled');
   for (var d = 0; d < adFormElements.length; d++) {
@@ -66,15 +73,10 @@
     pinMain.removeEventListener('keydown', onPinKeydown);
   };
 
-  var isItFirst = 0;
-
   var onPinMousedown = function (evt) {
     evt.preventDefault();
 
     if (evt.button === 0) {
-      isItFirst += 1;
-    }
-    if (evt.button === 0 && isItFirst === 1) {
       setActive();
     }
 
