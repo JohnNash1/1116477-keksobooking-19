@@ -64,7 +64,7 @@
     adForm.classList.remove('ad-form--disabled');
 
     setFormActive();
-    setPinsVisible();
+    setPinsVisible(adsPins);
 
     addressInput.value = getPinActiveAddress();
 
@@ -167,9 +167,9 @@
     }
   };
 
-  var setPinsVisible = function () {
-    for (var i = 0; i < adsPins.length; i++) {
-      setDisplayBlock(adsPins[i]);
+  var setPinsVisible = function (pins) {
+    for (var i = 0; i < pins.length; i++) {
+      setDisplayBlock(pins[i]);
     }
   };
 
@@ -190,6 +190,11 @@
   window.active = {
     keyEscape: KEY_ESC,
     setDisplayNone: setDisplayNone,
-    setInactive: setInactive
+    setInactive: setInactive,
+    setPinsVisible: setPinsVisible,
+    adsPins: adsPins,
+    adsCards: adsCards,
+    map: map,
+    setPinsHandler: setPinsHandler
   };
 })();
