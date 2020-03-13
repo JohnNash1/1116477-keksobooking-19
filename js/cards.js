@@ -6,7 +6,10 @@
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var map = document.querySelector('.map');
-  var mapFilter = document.querySelector('#housing-type');
+  var typeFilter = document.querySelector('#housing-type');
+  var priceFilter = document.querySelector('#housing-price');
+  var roomsFilter = document.querySelector('#housing-rooms');
+  var guestsFilter = document.querySelector('#housing-guests');
 
   var getCard = function (cardSample) {
     var card = cardTemplate.cloneNode(true);
@@ -141,16 +144,51 @@
   var pinsArray = [];
 
   var adsUpdate = function () {
-    if (mapFilter.value === 'any') {
-      window.pins.renderAllPins(pinsArray);
-      renderCards(pinsArray);
+    if (typeFilter.value === 'any') {
+      var sortedByType = pinsArray;
     } else {
-      var sortedByType = pinsArray.filter(function (it) {
-        return it.offer.type === mapFilter.value;
+      sortedByType = pinsArray.filter(function (it) {
+        return it.offer.type === typeFilter.value;
       });
-      window.pins.renderAllPins(sortedByType);
-      renderCards(sortedByType);
     }
+
+    switch (priceFilter.value) {
+      case 'middle':
+        var sortedByTypePrice = sortedByType.filter(function (it) {
+          return it.offer.price >= 10000 || it.offer.type <= 50000;
+        });
+        break;
+      case 'low':
+        sortedByTypePrice = sortedByType.filter(function (it) {
+          return it.offer.price < 10000;
+        });
+        break;
+      case 'high':
+        sortedByTypePrice = sortedByType.filter(function (it) {
+          return it.offer.price > 50000;
+        });
+        break;
+      default: sortedByTypePrice = sortedByType;
+    }
+
+    if (roomsFilter.value === 'any') {
+      var sortedByTypePriceRooms = sortedByTypePrice;
+    } else {
+      sortedByTypePriceRooms = sortedByTypePrice.filter(function (it) {
+        return it.offer.rooms === parseInt(roomsFilter.value, 10);
+      });
+    }
+
+    if (guestsFilter.value === 'any') {
+      var sortedByAll = sortedByTypePriceRooms;
+    } else {
+      sortedByAll = sortedByTypePriceRooms.filter(function (it) {
+        return it.offer.guests === parseInt(guestsFilter.value, 10);
+      });
+    }
+
+    window.pins.renderAllPins(sortedByAll);
+    renderCards(sortedByAll);
 
     window.active.setPinsHandler();
   };
@@ -160,9 +198,13 @@
     adsUpdate();
   };
 
-  mapFilter.addEventListener('change', function () {
-    adsUpdate();
-    window.active.setPinsVisible(window.active.adsPins);
+  document.addEventListener('change', function (evt) {
+    if (evt.target === typeFilter || evt.target === priceFilter || evt.target === roomsFilter || evt.target === guestsFilter) {
+      window.setTimeout(function () {
+        adsUpdate();
+        window.active.setPinsVisible(window.active.adsPins);
+      }, 500);
+    }
   });
   window.backend.load(successHandler, window.pins.errorHandler);
 })();
