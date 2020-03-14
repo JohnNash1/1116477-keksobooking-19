@@ -198,9 +198,14 @@
     adsUpdate();
   };
 
+  var lastTimeout;
+
   document.addEventListener('change', function (evt) {
     if (evt.target === typeFilter || evt.target === priceFilter || evt.target === roomsFilter || evt.target === guestsFilter) {
-      window.setTimeout(function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
         adsUpdate();
         window.active.setPinsVisible(window.active.adsPins);
       }, 500);
