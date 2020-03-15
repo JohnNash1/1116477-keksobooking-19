@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-
-
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var map = document.querySelector('.map');
@@ -115,14 +113,16 @@
       window.active.setDisplayNone(cardWifi);
     }
 
-    cardPhoto.src = offerPhotos[0];
+    cardPhotos.innerHTML = '';
 
-    if (offerPhotos.length > 1) {
-      for (var u = 1; u < offerPhotos.length; u++) {
+    if (offerPhotos.length > 0) {
+      for (var u = 0; u < offerPhotos.length; u++) {
         var clonedPhoto = cardPhoto.cloneNode();
         clonedPhoto.src = offerPhotos[u];
         cardPhotos.appendChild(clonedPhoto);
       }
+    } else {
+      window.active.setDisplayNone(cardPhotos);
     }
 
     window.active.setDisplayNone(card);
