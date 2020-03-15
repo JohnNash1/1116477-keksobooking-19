@@ -62,6 +62,8 @@
       case 'bungalo':
         cardType.textContent = 'Бунгало';
         break;
+      default:
+        throw new Error('Неизвестный тип жилья: «' + offerType + '»');
     }
 
     var conditioner = 0;
@@ -91,6 +93,8 @@
         case 'wifi':
           wifi += 1;
           break;
+        default:
+          throw new Error('Неизвестный тип удобства: «' + offerFeatures[m] + '»');
       }
     }
 

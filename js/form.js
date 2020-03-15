@@ -46,6 +46,8 @@
         priceInput.min = 10000;
         priceInput.placeholder = 10000;
         break;
+      default:
+        throw new Error('Неизвестный тип жилья: «' + typeInput.value + '»');
     }
   };
 
