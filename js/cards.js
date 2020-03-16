@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-
-
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var map = document.querySelector('.map');
@@ -64,6 +62,8 @@
       case 'bungalo':
         cardType.textContent = 'Бунгало';
         break;
+      default:
+        throw new Error('Неизвестный тип жилья: «' + offerType + '»');
     }
 
     var conditioner = 0;
@@ -93,6 +93,8 @@
         case 'wifi':
           wifi += 1;
           break;
+        default:
+          throw new Error('Неизвестный тип удобства: «' + offerFeatures[m] + '»');
       }
     }
 
@@ -115,14 +117,16 @@
       window.active.setDisplayNone(cardWifi);
     }
 
-    cardPhoto.src = offerPhotos[0];
+    cardPhotos.innerHTML = '';
 
-    if (offerPhotos.length > 1) {
-      for (var u = 1; u < offerPhotos.length; u++) {
+    if (offerPhotos.length > 0) {
+      for (var u = 0; u < offerPhotos.length; u++) {
         var clonedPhoto = cardPhoto.cloneNode();
         clonedPhoto.src = offerPhotos[u];
         cardPhotos.appendChild(clonedPhoto);
       }
+    } else {
+      window.active.setDisplayNone(cardPhotos);
     }
 
     window.active.setDisplayNone(card);

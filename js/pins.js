@@ -12,7 +12,6 @@
 
   var error = errorTemplate.cloneNode(true);
   var errorText = error.querySelector('.error__message');
-  // var errorButton = error.querySelector('.error__button');
 
   var getStyle = function (x, y) {
     return 'left: ' + (x + OFFSET_X) + 'px; top: ' + (y + OFFSET_Y) + 'px;';
@@ -70,7 +69,6 @@
   var setErrorClosed = function () {
     document.addEventListener('click', onErrorMessageClick);
     document.addEventListener('keydown', onErrorMessageKeydown);
-    // errorButton.addEventListener('click', onErrorMessageClick); если у меня навешан обработчик клика куда угодно и происходит закрытие сообщения, зачем мне ещё обработчик на кнопку "попробовать снова"?
   };
 
   var errorHandler = function (errorMessage) {
