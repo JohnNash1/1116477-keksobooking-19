@@ -17,6 +17,39 @@
   var adsCards = map.getElementsByClassName('map__card');
   var closeButtons = map.getElementsByClassName('popup__close');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var mapFilters = document.querySelectorAll('.map__filter');
+  var mapFeatures = document.querySelector('.map__features');
+
+  var setDisabled = function (elem) {
+    elem.setAttribute('disabled', 'disabled');
+  };
+
+  var setFilterInactive = function () {
+    Array.from(mapFilters).forEach(function (filter) {
+      setDisabled(filter);
+    });
+
+    setDisabled(mapFeatures);
+  };
+
+
+  var setFormInactive = function () {
+    setDisabled(adFormHeader);
+    for (var i = 0; i < adFormElements.length; i++) {
+      setDisabled(adFormElements[i]);
+    }
+  };
+
+  var setInactive = function () {
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+
+    setFilterInactive();
+    setFormInactive();
+    window.pins.removeAllPins();
+  };
+
+  setInactive();
 
   var onResetButtonClick = function () {
     setInactive();
@@ -24,22 +57,22 @@
 
   resetButton.addEventListener('click', onResetButtonClick);
 
-  adFormHeader.setAttribute('disabled', 'disabled');
-  for (var d = 0; d < adFormElements.length; d++) {
-    adFormElements[d].setAttribute('disabled', 'disabled');
-  }
-
-  var setFormActive = function () {
-    adFormHeader.removeAttribute('disabled', 'disabled');
-    for (var f = 0; f < adFormElements.length; f++) {
-      adFormElements[f].removeAttribute('disabled', 'disabled');
-    }
+  var removeDisabled = function (elem) {
+    elem.removeAttribute('disabled', 'disabled');
   };
 
-  var setFormInactive = function () {
-    adFormHeader.setAttribute('disabled', 'disabled');
-    for (var f = 0; f < adFormElements.length; f++) {
-      adFormElements[f].setAttribute('disabled', 'disabled');
+  var setFilterActive = function () {
+    Array.from(mapFilters).forEach(function (filter) {
+      removeDisabled(filter);
+    });
+
+    removeDisabled(mapFeatures);
+  };
+
+  var setFormActive = function () {
+    removeDisabled(adFormHeader);
+    for (var j = 0; j < adFormElements.length; j++) {
+      removeDisabled(adFormElements[j]);
     }
   };
 
@@ -63,8 +96,9 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
 
+    window.backend.load(window.cards.successHandler, window.pins.errorHandler);
+
     setFormActive();
-    setPinsVisible(adsPins);
 
     addressInput.value = getPinActiveAddress();
 
@@ -140,6 +174,11 @@
 
   var setCardShow = function (advertisementPin, advertisementCard) {
     advertisementPin.addEventListener('click', function () {
+      Array.from(adsCards).forEach(function (card) {
+        if (card.style.display === 'block') {
+          setDisplayNone(card);
+        }
+      });
       setDisplayBlock(advertisementCard);
     });
     advertisementPin.addEventListener('keydown', function (evt) {
@@ -167,34 +206,14 @@
     }
   };
 
-  var setPinsVisible = function (pins) {
-    for (var i = 0; i < pins.length; i++) {
-      setDisplayBlock(pins[i]);
-    }
-  };
-
-  var setPinsHidden = function () {
-    for (var i = 0; i < adsPins.length; i++) {
-      setDisplayNone(adsPins[i]);
-    }
-  };
-
-  var setInactive = function () {
-    map.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
-
-    setFormInactive();
-    setPinsHidden();
-  };
-
   window.active = {
     keyEscape: KEY_ESC,
     setDisplayNone: setDisplayNone,
     setInactive: setInactive,
-    setPinsVisible: setPinsVisible,
     adsPins: adsPins,
     adsCards: adsCards,
     map: map,
-    setPinsHandler: setPinsHandler
+    setPinsHandler: setPinsHandler,
+    setFilterActive: setFilterActive
   };
 })();

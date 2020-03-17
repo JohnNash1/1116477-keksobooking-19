@@ -200,6 +200,7 @@
   var successHandler = function (response) {
     pinsArray = response;
     adsUpdate();
+    window.active.setFilterActive();
   };
 
   var lastTimeout;
@@ -211,9 +212,11 @@
       }
       lastTimeout = window.setTimeout(function () {
         adsUpdate();
-        window.active.setPinsVisible(window.active.adsPins);
       }, 500);
     }
   });
-  window.backend.load(successHandler, window.pins.errorHandler);
+
+  window.cards = {
+    successHandler: successHandler
+  };
 })();

@@ -9,6 +9,7 @@
   var mapPins = document.querySelector('.map__pins');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var main = document.querySelector('main');
+  var pinsCollection = document.getElementsByClassName('map__pin--ads');
 
   var error = errorTemplate.cloneNode(true);
   var errorText = error.querySelector('.error__message');
@@ -31,20 +32,22 @@
     pinImage.alt = avatarAlt;
     pin.classList.add('map__pin--ads');
 
-    pin.style.display = 'none';
-
     return pin;
   };
 
-  var renderAllPins = function (data) {
-    var takeNumber = data.length > PINS_AMOUNT ? PINS_AMOUNT : data.length;
-    var pinsCollection = document.getElementsByClassName('map__pin--ads');
-
+  var removeAllPins = function functionName() {
     if (pinsCollection.length > 0) {
       for (var i = pinsCollection.length - 1; i >= 0; i--) {
         mapPins.removeChild(pinsCollection[i]);
       }
     }
+  };
+
+  var renderAllPins = function (data) {
+    var takeNumber = data.length > PINS_AMOUNT ? PINS_AMOUNT : data.length;
+
+    removeAllPins();
+
     for (var n = 0; n < takeNumber; n++) {
       mapPins.appendChild(getPin(data[n]));
     }
@@ -79,6 +82,7 @@
 
   window.pins = {
     renderAllPins: renderAllPins,
+    removeAllPins: removeAllPins,
     errorHandler: errorHandler
   };
 })();
