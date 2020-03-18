@@ -5,6 +5,15 @@
   var PIN_ACTIVE_OFFSET_Y = 43;
   var KEY_ENTER = 'Enter';
   var KEY_ESC = 'Escape';
+  var PIN_DEFAULT_LEFT = '570px';
+  var PIN_DEFAULT_TOP = '375px';
+
+  var MapSize = {
+    MIN_X: -32,
+    MAX_X: 1168,
+    MIN_Y: 130,
+    MAX_Y: 630,
+  };
 
   var map = document.querySelector('.map');
   var pinMain = document.querySelector('.map__pin--main');
@@ -47,6 +56,9 @@
     setFilterInactive();
     setFormInactive();
     window.pins.removeAllPins();
+
+    pinMain.style.top = PIN_DEFAULT_TOP;
+    pinMain.style.left = PIN_DEFAULT_LEFT;
   };
 
   setInactive();
@@ -114,6 +126,28 @@
       setActive();
     }
 
+    var limitMove = function (x, min, max) {
+      if (x < min) {
+        x = min;
+      } else if (x > max) {
+        x = max;
+      }
+      return x;
+    };
+
+    var calculatePinCoords = function (xCoord, yCoord) {
+      var mainPinCoords = {
+        x: limitMove(xCoord, MapSize.MIN_X, MapSize.MAX_X),
+        y: limitMove(yCoord, MapSize.MIN_Y, MapSize.MAX_Y),
+      };
+
+      pinMain.style.left = mainPinCoords.x + 'px';
+      pinMain.style.top = mainPinCoords.y + 'px';
+    };
+
+    var xCoord = parseInt(pinMain.style.left, 10);
+    var yCoord = parseInt(pinMain.style.top, 10);
+
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -132,14 +166,19 @@
         y: moveEvt.clientY
       };
 
-      if (startCoords.y < 130 || startCoords.y > 630) {
-        pinMain.style.top = pinMain.offsetTop + 'px';
-      } else if (startCoords.x < 350 || startCoords.x > 1550) {
-        pinMain.style.left = pinMain.offsetLeft + 'px';
-      } else {
-        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
-      }
+      xCoord = xCoord - shift.x;
+      yCoord = yCoord - shift.y;
+
+      calculatePinCoords(xCoord, yCoord);
+
+      // if (startCoords.y < 130 || startCoords.y > 630) {
+      //   pinMain.style.top = pinMain.offsetTop + 'px';
+      // } else if (startCoords.x < 350 || startCoords.x > 1550) {
+      //   pinMain.style.left = pinMain.offsetLeft + 'px';
+      // } else {
+      //   pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+      //   pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      // }
 
       addressInput.value = getPinActiveAddress();
     };
