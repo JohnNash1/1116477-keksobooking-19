@@ -200,9 +200,9 @@
   };
 
   var setPinsHandler = function () {
-    for (var f = 0; f < adsPins.length; f++) {
-      setCardShow(adsPins[f], adsCards[f]);
-      setCardHide(closeButtons[f], adsCards[f]);
+    for (var l = 0; l < adsPins.length; l++) {
+      setCardShow(adsPins[l], adsCards[l]);
+      setCardHide(closeButtons[l], adsCards[l]);
     }
   };
 

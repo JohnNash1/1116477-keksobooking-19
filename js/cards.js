@@ -8,6 +8,7 @@
   var priceFilter = document.querySelector('#housing-price');
   var roomsFilter = document.querySelector('#housing-rooms');
   var guestsFilter = document.querySelector('#housing-guests');
+  var mapCheckboxes = document.querySelectorAll('.map__checkbox');
 
   var getCard = function (cardSample) {
     var card = cardTemplate.cloneNode(true);
@@ -140,8 +141,8 @@
         window.active.map.removeChild(window.active.adsCards[i]);
       }
     }
-    for (var k = 0; k < advertisements.length; k++) {
-      map.insertBefore(getCard(advertisements[k]), mapFiltersContainer);
+    for (var j = 0; j < advertisements.length; j++) {
+      map.insertBefore(getCard(advertisements[j]), mapFiltersContainer);
     }
   };
 
@@ -191,8 +192,21 @@
       });
     }
 
-    window.pins.renderAllPins(sortedByAll);
-    renderCards(sortedByAll);
+    var renderSortedPins = function (checkbox) {
+      if (checkbox.checked) {
+        var sortedByFeatures = sortedByAll.filter(function (it) {
+          return it.offer.features.indexOf(checkbox.value) !== -1;
+        });
+      } else {
+        sortedByFeatures = sortedByAll;
+      }
+      window.pins.renderAllPins(sortedByFeatures);
+      renderCards(sortedByFeatures);
+    };
+
+    Array.from(mapCheckboxes).forEach(function (feature) {
+      renderSortedPins(feature);
+    });
 
     window.active.setPinsHandler();
   };
@@ -214,6 +228,17 @@
         adsUpdate();
       }, 500);
     }
+
+    Array.from(mapCheckboxes).forEach(function (feature) {
+      if (evt.target === feature) {
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          adsUpdate();
+        }, 500);
+      }
+    });
   });
 
   window.cards = {
