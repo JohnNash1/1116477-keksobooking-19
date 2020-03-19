@@ -48,8 +48,8 @@
 
     removeAllPins();
 
-    for (var n = 0; n < takeNumber; n++) {
-      mapPins.appendChild(getPin(data[n]));
+    for (var i = 0; i < takeNumber; i++) {
+      mapPins.appendChild(getPin(data[i]));
     }
   };
 

@@ -83,8 +83,8 @@
 
   var setFormActive = function () {
     removeDisabled(adFormHeader);
-    for (var j = 0; j < adFormElements.length; j++) {
-      removeDisabled(adFormElements[j]);
+    for (var i = 0; i < adFormElements.length; i++) {
+      removeDisabled(adFormElements[i]);
     }
   };
 
@@ -171,15 +171,6 @@
 
       calculatePinCoords(xCoord, yCoord);
 
-      // if (startCoords.y < 130 || startCoords.y > 630) {
-      //   pinMain.style.top = pinMain.offsetTop + 'px';
-      // } else if (startCoords.x < 350 || startCoords.x > 1550) {
-      //   pinMain.style.left = pinMain.offsetLeft + 'px';
-      // } else {
-      //   pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-      //   pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
-      // }
-
       addressInput.value = getPinActiveAddress();
     };
 
@@ -239,9 +230,9 @@
   };
 
   var setPinsHandler = function () {
-    for (var l = 0; l < adsPins.length; l++) {
-      setCardShow(adsPins[l], adsCards[l]);
-      setCardHide(closeButtons[l], adsCards[l]);
+    for (var i = 0; i < adsPins.length; i++) {
+      setCardShow(adsPins[i], adsCards[i]);
+      setCardHide(closeButtons[i], adsCards[i]);
     }
   };
 

@@ -1,6 +1,13 @@
 'use strict';
 
 (function () {
+  var FILTERS = [
+    typeFilter,
+    priceFilter,
+    roomsFilter,
+    guestsFilter
+  ];
+
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var map = document.querySelector('.map');
@@ -9,6 +16,26 @@
   var roomsFilter = document.querySelector('#housing-rooms');
   var guestsFilter = document.querySelector('#housing-guests');
   var mapCheckboxes = document.querySelectorAll('.map__checkbox');
+  var mapFeatures = document.querySelector('.map__features');
+
+  var translateCardTypes = function (toTranslate, translated) {
+    switch (toTranslate) {
+      case 'palace':
+        translated.textContent = 'Дворец';
+        break;
+      case 'flat':
+        translated.textContent = 'Квартира';
+        break;
+      case 'house':
+        translated.textContent = 'Дом';
+        break;
+      case 'bungalo':
+        translated.textContent = 'Бунгало';
+        break;
+      default:
+        throw new Error('Неизвестный тип жилья: «' + toTranslate + '»');
+    }
+  };
 
   var getCard = function (cardSample) {
     var card = cardTemplate.cloneNode(true);
@@ -50,22 +77,7 @@
     cardTime.textContent = 'Заезд после ' + offerCheckin + ', выезд до ' + offerCheckout;
     cardDescribtion.textContent = offerDescribtion;
 
-    switch (offerType) {
-      case 'palace':
-        cardType.textContent = 'Дворец';
-        break;
-      case 'flat':
-        cardType.textContent = 'Квартира';
-        break;
-      case 'house':
-        cardType.textContent = 'Дом';
-        break;
-      case 'bungalo':
-        cardType.textContent = 'Бунгало';
-        break;
-      default:
-        throw new Error('Неизвестный тип жилья: «' + offerType + '»');
-    }
+    translateCardTypes(offerType, cardType);
 
     var conditioner = 0;
     var elevator = 0;
@@ -74,8 +86,8 @@
     var dishwasher = 0;
     var wifi = 0;
 
-    for (var m = 0; m < offerFeatures.length; m++) {
-      switch (offerFeatures[m]) {
+    for (var i = 0; i < offerFeatures.length; i++) {
+      switch (offerFeatures[i]) {
         case 'conditioner':
           conditioner += 1;
           break;
@@ -95,7 +107,7 @@
           wifi += 1;
           break;
         default:
-          throw new Error('Неизвестный тип удобства: «' + offerFeatures[m] + '»');
+          throw new Error('Неизвестный тип удобства: «' + offerFeatures[i] + '»');
       }
     }
 
@@ -121,9 +133,9 @@
     cardPhotos.innerHTML = '';
 
     if (offerPhotos.length > 0) {
-      for (var u = 0; u < offerPhotos.length; u++) {
+      for (i = 0; i < offerPhotos.length; i++) {
         var clonedPhoto = cardPhoto.cloneNode();
-        clonedPhoto.src = offerPhotos[u];
+        clonedPhoto.src = offerPhotos[i];
         cardPhotos.appendChild(clonedPhoto);
       }
     } else {
@@ -141,8 +153,8 @@
         window.active.map.removeChild(window.active.adsCards[i]);
       }
     }
-    for (var j = 0; j < advertisements.length; j++) {
-      map.insertBefore(getCard(advertisements[j]), mapFiltersContainer);
+    for (i = 0; i < advertisements.length; i++) {
+      map.insertBefore(getCard(advertisements[i]), mapFiltersContainer);
     }
   };
 
@@ -265,7 +277,7 @@
   var lastTimeout;
 
   document.addEventListener('change', function (evt) {
-    if (evt.target === typeFilter || evt.target === priceFilter || evt.target === roomsFilter || evt.target === guestsFilter) {
+    if (evt.target.parentNode === mapFeatures || FILTERS.indexOf(evt.target) !== -1) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
@@ -273,17 +285,6 @@
         adsUpdate();
       }, 500);
     }
-
-    Array.from(mapCheckboxes).forEach(function (feature) {
-      if (evt.target === feature) {
-        if (lastTimeout) {
-          window.clearTimeout(lastTimeout);
-        }
-        lastTimeout = window.setTimeout(function () {
-          adsUpdate();
-        }, 500);
-      }
-    });
   });
 
   window.cards = {
