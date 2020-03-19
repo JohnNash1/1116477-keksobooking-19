@@ -37,6 +37,58 @@
     }
   };
 
+  var getFeatureCounters = function (features) {
+    var counters = {
+      conditioner: 0,
+      elevator: 0,
+      washer: 0,
+      parking: 0,
+      dishwasher: 0,
+      wifi: 0
+    };
+
+    for (var i = 0; i < features.length; i++) {
+      switch (features[i]) {
+        case 'conditioner':
+          counters.conditioner += 1;
+          break;
+        case 'elevator':
+          counters.elevator += 1;
+          break;
+        case 'washer':
+          counters.washer += 1;
+          break;
+        case 'parking':
+          counters.parking += 1;
+          break;
+        case 'dishwasher':
+          counters.dishwasher += 1;
+          break;
+        case 'wifi':
+          counters.wifi += 1;
+          break;
+        default:
+          throw new Error('Неизвестный тип удобства: «' + features[i] + '»');
+      }
+    }
+
+    return counters;
+  };
+
+  var getAdsPreview = function (photos, photo, array) {
+    photos.innerHTML = '';
+
+    if (array.length > 0) {
+      for (var i = 0; i < array.length; i++) {
+        var clonedPhoto = photo.cloneNode();
+        clonedPhoto.src = array[i];
+        photos.appendChild(clonedPhoto);
+      }
+    } else {
+      window.active.setDisplayNone(photos);
+    }
+  };
+
   var getCard = function (cardSample) {
     var card = cardTemplate.cloneNode(true);
     var cardImage = card.querySelector('.popup__avatar');
@@ -79,68 +131,26 @@
 
     translateCardTypes(offerType, cardType);
 
-    var conditioner = 0;
-    var elevator = 0;
-    var washer = 0;
-    var parking = 0;
-    var dishwasher = 0;
-    var wifi = 0;
-
-    for (var i = 0; i < offerFeatures.length; i++) {
-      switch (offerFeatures[i]) {
-        case 'conditioner':
-          conditioner += 1;
-          break;
-        case 'elevator':
-          elevator += 1;
-          break;
-        case 'washer':
-          washer += 1;
-          break;
-        case 'parking':
-          parking += 1;
-          break;
-        case 'dishwasher':
-          dishwasher += 1;
-          break;
-        case 'wifi':
-          wifi += 1;
-          break;
-        default:
-          throw new Error('Неизвестный тип удобства: «' + offerFeatures[i] + '»');
-      }
-    }
-
-    if (conditioner === 0) {
+    if (getFeatureCounters(offerFeatures).conditioner === 0) {
       window.active.setDisplayNone(cardConditioner);
     }
-    if (elevator === 0) {
+    if (getFeatureCounters(offerFeatures).elevator === 0) {
       window.active.setDisplayNone(cardElevator);
     }
-    if (washer === 0) {
+    if (getFeatureCounters(offerFeatures).washer === 0) {
       window.active.setDisplayNone(cardWasher);
     }
-    if (parking === 0) {
+    if (getFeatureCounters(offerFeatures).parking === 0) {
       window.active.setDisplayNone(cardParking);
     }
-    if (dishwasher === 0) {
+    if (getFeatureCounters(offerFeatures).dishwasher === 0) {
       window.active.setDisplayNone(cardDishwasher);
     }
-    if (wifi === 0) {
+    if (getFeatureCounters(offerFeatures).wifi === 0) {
       window.active.setDisplayNone(cardWifi);
     }
 
-    cardPhotos.innerHTML = '';
-
-    if (offerPhotos.length > 0) {
-      for (i = 0; i < offerPhotos.length; i++) {
-        var clonedPhoto = cardPhoto.cloneNode();
-        clonedPhoto.src = offerPhotos[i];
-        cardPhotos.appendChild(clonedPhoto);
-      }
-    } else {
-      window.active.setDisplayNone(cardPhotos);
-    }
+    getAdsPreview(cardPhotos, cardPhoto, offerPhotos);
 
     window.active.setDisplayNone(card);
 
