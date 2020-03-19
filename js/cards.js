@@ -17,6 +17,7 @@
   var guestsFilter = document.querySelector('#housing-guests');
   var mapCheckboxes = document.querySelectorAll('.map__checkbox');
   var mapFeatures = document.querySelector('.map__features');
+  var mapFilters = document.querySelector('.map__filters');
 
   var translateCardTypes = function (toTranslate, translated) {
     switch (toTranslate) {
@@ -277,7 +278,7 @@
   var lastTimeout;
 
   document.addEventListener('change', function (evt) {
-    if (evt.target.parentNode === mapFeatures || FILTERS.indexOf(evt.target) !== -1) {
+    if (evt.target.parentNode === mapFilters || evt.target.parentNode === mapFeatures || FILTERS.indexOf(evt.target) !== -1) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
