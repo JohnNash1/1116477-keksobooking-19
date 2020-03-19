@@ -8,9 +8,19 @@
   var priceInput = adForm.querySelector('input[name="price"]');
   var timeinInput = adForm.querySelector('select[name="timein"]');
   var timeoutInput = adForm.querySelector('select[name="timeout"]');
+  var resetButton = adForm.querySelector('.ad-form__reset');
+  var mapFilters = document.querySelector('.map__filters');
   var successTemp = document.querySelector('#success').content.querySelector('.success');
 
   var success = successTemp.cloneNode(true);
+
+  var onResetButtonClick = function () {
+    adForm.reset();
+    mapFilters.reset();
+    window.active.setInactive();
+  };
+
+  resetButton.addEventListener('click', onResetButtonClick);
 
   var onSelectChange = function () {
     if (roomsInput.value === '100' && capacityInput.value !== '0') {
@@ -89,6 +99,7 @@
   var onSaveSuccess = function () {
     adForm.appendChild(success);
     adForm.reset();
+    mapFilters.reset();
     window.active.setInactive();
     setSuccessClosed();
   };

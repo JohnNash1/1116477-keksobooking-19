@@ -25,7 +25,6 @@
   var adsPins = mapPins.getElementsByClassName('map__pin--ads');
   var adsCards = map.getElementsByClassName('map__card');
   var closeButtons = map.getElementsByClassName('popup__close');
-  var resetButton = adForm.querySelector('.ad-form__reset');
   var mapFilters = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
 
@@ -62,12 +61,6 @@
   };
 
   setInactive();
-
-  var onResetButtonClick = function () {
-    setInactive();
-  };
-
-  resetButton.addEventListener('click', onResetButtonClick);
 
   var removeDisabled = function (elem) {
     elem.removeAttribute('disabled', 'disabled');
