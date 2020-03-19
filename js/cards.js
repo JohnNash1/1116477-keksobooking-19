@@ -192,21 +192,66 @@
       });
     }
 
-    var renderSortedPins = function (checkbox) {
-      if (checkbox.checked) {
-        var sortedByFeatures = sortedByAll.filter(function (it) {
-          return it.offer.features.indexOf(checkbox.value) !== -1;
-        });
-      } else {
-        sortedByFeatures = sortedByAll;
-      }
-      window.pins.renderAllPins(sortedByFeatures);
-      renderCards(sortedByFeatures);
+    var featuresFilter = {
+      'wifi': false,
+      'dishwasher': false,
+      'parking': false,
+      'washer': false,
+      'elevator': false,
+      'conditioner': false
     };
 
     Array.from(mapCheckboxes).forEach(function (feature) {
-      renderSortedPins(feature);
+      if (feature.checked) {
+        featuresFilter[feature.value] = true;
+      }
     });
+
+    if (featuresFilter.wifi) {
+      var sortedByWifi = sortedByAll.filter(function (it) {
+        return it.offer.features.indexOf('wifi') !== -1;
+      });
+    } else {
+      sortedByWifi = sortedByAll;
+    }
+    if (featuresFilter.dishwasher) {
+      var sortedByDishwasher = sortedByWifi.filter(function (it) {
+        return it.offer.features.indexOf('dishwasher') !== -1;
+      });
+    } else {
+      sortedByDishwasher = sortedByWifi;
+    }
+    if (featuresFilter.parking) {
+      var sortedByParking = sortedByDishwasher.filter(function (it) {
+        return it.offer.features.indexOf('parking') !== -1;
+      });
+    } else {
+      sortedByParking = sortedByDishwasher;
+    }
+    if (featuresFilter.washer) {
+      var sortedByWasher = sortedByParking.filter(function (it) {
+        return it.offer.features.indexOf('washer') !== -1;
+      });
+    } else {
+      sortedByWasher = sortedByParking;
+    }
+    if (featuresFilter.elevator) {
+      var sortedByElevator = sortedByWasher.filter(function (it) {
+        return it.offer.features.indexOf('elevator') !== -1;
+      });
+    } else {
+      sortedByElevator = sortedByWasher;
+    }
+    if (featuresFilter.conditioner) {
+      var sortedByConditioner = sortedByElevator.filter(function (it) {
+        return it.offer.features.indexOf('conditioner') !== -1;
+      });
+    } else {
+      sortedByConditioner = sortedByElevator;
+    }
+
+    window.pins.renderAllPins(sortedByConditioner);
+    renderCards(sortedByConditioner);
 
     window.active.setPinsHandler();
   };
