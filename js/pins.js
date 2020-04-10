@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var OFFSET_X = 20;
-  var OFFSET_Y = 40;
+  var OFFSET_X = 25;
+  var OFFSET_Y = 70;
   var PINS_AMOUNT = 5;
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -15,7 +15,7 @@
   var errorText = error.querySelector('.error__message');
 
   var getStyle = function (x, y) {
-    return 'left: ' + (x + OFFSET_X) + 'px; top: ' + (y + OFFSET_Y) + 'px;';
+    return 'left: ' + (x - OFFSET_X) + 'px; top: ' + (y - OFFSET_Y) + 'px;';
   };
 
   var getPin = function (pinSample) {

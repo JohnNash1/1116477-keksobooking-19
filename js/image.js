@@ -10,6 +10,8 @@
   var adsPreview = document.querySelector('.ad-form__photo');
   var adsImg = document.createElement('img');
 
+  var defaultSrc = avaImg.src;
+
   avaInput.addEventListener('change', function () {
     var file = avaInput.files[0];
 
@@ -24,6 +26,9 @@
 
       reader.addEventListener('load', function () {
         avaImg.src = reader.result;
+        avaImg.width = '70';
+        avaImg.height = '70';
+        avaImg.parentNode.style.padding = '0';
       });
 
       reader.readAsDataURL(file);
@@ -52,4 +57,10 @@
       adsReader.readAsDataURL(adsFile);
     }
   });
+
+  window.image = {
+    avaImg: avaImg,
+    defaultSrc: defaultSrc,
+    adsPreview: adsPreview
+  };
 })();

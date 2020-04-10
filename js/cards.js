@@ -18,23 +18,34 @@
     guestsFilter
   ];
 
+  // var translateCardTypes = function (toTranslate, translated) {
+  //   switch (toTranslate) {
+  //     case 'palace':
+  //       translated.textContent = 'Дворец';
+  //       break;
+  //     case 'flat':
+  //       translated.textContent = 'Квартира';
+  //       break;
+  //     case 'house':
+  //       translated.textContent = 'Дом';
+  //       break;
+  //     case 'bungalo':
+  //       translated.textContent = 'Бунгало';
+  //       break;
+  //     default:
+  //       throw new Error('Неизвестный тип жилья: «' + toTranslate + '»');
+  //   }
+  // };
+
+  var Type = {
+    'palace': 'Дворец',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
+  };
+
   var translateCardTypes = function (toTranslate, translated) {
-    switch (toTranslate) {
-      case 'palace':
-        translated.textContent = 'Дворец';
-        break;
-      case 'flat':
-        translated.textContent = 'Квартира';
-        break;
-      case 'house':
-        translated.textContent = 'Дом';
-        break;
-      case 'bungalo':
-        translated.textContent = 'Бунгало';
-        break;
-      default:
-        throw new Error('Неизвестный тип жилья: «' + toTranslate + '»');
-    }
+    translated.textContent = Type[toTranslate];
   };
 
   var getFeatureCounters = function (features) {
@@ -171,13 +182,17 @@
   var pinsArray = [];
 
   var adsUpdate = function () {
-    if (typeFilter.value === 'any') {
-      var sortedByType = pinsArray;
-    } else {
-      sortedByType = pinsArray.filter(function (it) {
-        return it.offer.type === typeFilter.value;
-      });
-    }
+    // if (typeFilter.value === 'any') {
+    //   var sortedByType = pinsArray;
+    // } else {
+    //   sortedByType = pinsArray.filter(function (it) {
+    //     return it.offer.type === typeFilter.value;
+    //   });
+    // }
+
+    var sortedByType = typeFilter.value === 'any' ? pinsArray : pinsArray.filter(function (it) {
+      return it.offer.type === typeFilter.value;
+    });
 
     switch (priceFilter.value) {
       case 'middle':
@@ -223,7 +238,7 @@
       'conditioner': false
     };
 
-    Array.from(mapCheckboxes).forEach(function (feature) {
+    [...mapCheckboxes].forEach(function (feature) {
       if (feature.checked) {
         featuresFilter[feature.value] = true;
       }
@@ -298,6 +313,7 @@
   });
 
   window.cards = {
-    successHandler: successHandler
+    successHandler: successHandler,
+    adsUpdate: adsUpdate
   };
 })();

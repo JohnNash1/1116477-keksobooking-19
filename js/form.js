@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  var PreviewDefault = {
+    WIDTH: '40',
+    HEIGHT: '44',
+    PADDING: '0 15px'
+  };
+
   var adForm = document.querySelector('.ad-form');
   var roomsInput = adForm.querySelector('select[name="rooms"]');
   var capacityInput = adForm.querySelector('select[name="capacity"]');
@@ -13,14 +19,6 @@
   var successTemp = document.querySelector('#success').content.querySelector('.success');
 
   var success = successTemp.cloneNode(true);
-
-  var onResetButtonClick = function () {
-    adForm.reset();
-    mapFilters.reset();
-    window.active.setInactive();
-  };
-
-  resetButton.addEventListener('click', onResetButtonClick);
 
   var onSelectChange = function () {
     if (roomsInput.value === '100' && capacityInput.value !== '0') {
@@ -100,9 +98,29 @@
     adForm.appendChild(success);
     adForm.reset();
     mapFilters.reset();
+    window.image.avaImg.src = window.image.defaultSrc;
+    window.image.avaImg.width = PreviewDefault.WIDTH;
+    window.image.avaImg.height = PreviewDefault.HEIGHT;
+    window.image.avaImg.parentNode.style.padding = PreviewDefault.PADDING;
+    window.image.adsPreview.innerHTML = '';
+    window.active.addressInput.value = window.active.getPinActiveAddress();
     window.active.setInactive();
     setSuccessClosed();
   };
+
+  var onResetButtonClick = function () {
+    adForm.reset();
+    mapFilters.reset();
+    window.image.avaImg.src = window.image.defaultSrc;
+    window.image.avaImg.width = PreviewDefault.WIDTH;
+    window.image.avaImg.height = PreviewDefault.HEIGHT;
+    window.image.avaImg.parentNode.style.padding = PreviewDefault.PADDING;
+    window.image.adsPreview.innerHTML = '';
+    window.active.addressInput.value = window.active.getPinActiveAddress();
+    window.active.setInactive();
+  };
+
+  resetButton.addEventListener('click', onResetButtonClick);
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();

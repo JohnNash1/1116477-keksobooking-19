@@ -58,6 +58,8 @@
 
     pinMain.style.top = PIN_DEFAULT_TOP;
     pinMain.style.left = PIN_DEFAULT_LEFT;
+
+    pinMain.addEventListener('keydown', onPinKeydown);
   };
 
   setInactive();
@@ -97,11 +99,20 @@
 
   addressInput.value = getPinMainAddress();
 
+  var isItFirst = true;
+
   var setActive = function () {
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
 
-    window.backend.load(window.cards.successHandler, window.pins.errorHandler);
+    if (isItFirst) {
+      window.backend.load(window.cards.successHandler, window.pins.errorHandler);
+    } else {
+      window.cards.adsUpdate();
+      setFilterActive();
+    }
+
+    isItFirst = false;
 
     setFormActive();
 
@@ -237,6 +248,8 @@
     adsCards: adsCards,
     map: map,
     setPinsHandler: setPinsHandler,
-    setFilterActive: setFilterActive
+    setFilterActive: setFilterActive,
+    addressInput: addressInput,
+    getPinActiveAddress: getPinActiveAddress
   };
 })();
