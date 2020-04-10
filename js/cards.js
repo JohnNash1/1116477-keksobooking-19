@@ -238,7 +238,7 @@
       'conditioner': false
     };
 
-    [...mapCheckboxes].forEach(function (feature) {
+    Array.from(mapCheckboxes).forEach(function (feature) {
       if (feature.checked) {
         featuresFilter[feature.value] = true;
       }
